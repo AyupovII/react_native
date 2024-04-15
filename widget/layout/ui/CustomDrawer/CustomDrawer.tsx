@@ -1,18 +1,34 @@
 import { DrawerContentComponentProps, DrawerContentScrollView } from "@react-navigation/drawer";
-import { StyleSheet, Text, View, Image } from "react-native";
-import { Colors } from "../../../../shared/token";
-import { CustomLink } from "../../../../shared/CustomLink/CustomLink";
-import { CloseDrawer } from "../CloseDrawer/CloseDrawer";
-import { useAtom, useSetAtom } from "jotai";
-import { LogOutAtom } from "../../../auth/model/auth.state";
-import { loadProfileAtom } from "../../../user/model/user.state";
+import { useSetAtom, useAtom } from "jotai";
 import { useEffect } from "react";
-import { UserMenu } from "../../../user/ui/UserMenu/UserMenu";
+import { StyleSheet, Text, View, Image } from "react-native";
+import { Colors } from "react-native/Libraries/NewAppScreen";
+import CoursesIcon from "../../../../assets/menu/courses";
+import ProfileIcon from "../../../../assets/menu/profile";
+import { LogOutAtom } from "../../../../entities/auth/model/auth.state";
+import { CloseDrawer } from "../../../../entities/layout/ui/CloseDrawer/CloseDrawer";
+import { MenuItem } from "../../../../entities/layout/ui/MenuItem/MenuItem";
+import { loadProfileAtom } from "../../../../entities/user/model/user.state";
+import { UserMenu } from "./user/ui/UserMenu/UserMenu";
+import { CustomLink } from "../../../../shared/CustomLink/CustomLink";
 
+const MENU = [
+    {
+        path: 'profile',
+        text: 'Профиль',
+        icon: <ProfileIcon />
+    },
+    {
+        path: 'index',
+        text: 'Курсы',
+        icon: <CoursesIcon />
+    },
+
+]
 export function CustomDrawer(props: DrawerContentComponentProps) {
     const logout = useSetAtom(LogOutAtom);
     const [profile, loadProfile] = useAtom(loadProfileAtom)
-    console.log(profile);
+    console.log(111111, profile);
     useEffect(() => {
         loadProfile()
     }, [])
@@ -20,7 +36,16 @@ export function CustomDrawer(props: DrawerContentComponentProps) {
         <DrawerContentScrollView {...props} contentContainerStyle={styles.scrollView}>
             <View style={styles.content}>
                 <CloseDrawer {...props.navigation} />
-                <UserMenu user={profile?.profile?.profile} />
+                <UserMenu user={profile?.profile?.profile ?? profile?.profile} />
+                {
+                    MENU.map((item) => (
+                        <MenuItem
+                            key={item.path}
+                            {...item}
+                            drawer={props}
+                        />
+                    ))
+                }
             </View>
             <View style={styles.footer}>
                 <CustomLink text="Выход" href="/login" onPress={() => logout()} />

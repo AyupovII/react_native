@@ -11,18 +11,22 @@ export const Colors = {
 };
 
 export const Gaps = {
+    g8: 8,
     g16: 16,
+    g20: 20,
     g50: 50
 };
 
 export const Raduis = {
-    r10: 10
+    r10: 10,
+    r35: 35
 }
 
 export const Fonts={
+    f14: 14,
     f16: 16,
     f18: 18,
     f20: 20,
-    regular: 'FiraSans',
-    semibold: 'FiraSansBold'
+    regular: 'FiraSans-Regular',
+    semibold: 'FiraSans-SemiBold'
 }
